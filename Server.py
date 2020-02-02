@@ -40,7 +40,7 @@ def server_prog():
     # s.close() 
 
 def clientThread(connection, ip, port, max_buffer_size = 5120):
-   print("Entered clientThread")
+   # print("Entered clientThread")
    is_active = True
    while is_active:
       client_input = receive_input(connection, max_buffer_size)
@@ -50,7 +50,7 @@ def clientThread(connection, ip, port, max_buffer_size = 5120):
          print("Connection " + ip + ":" + port + " closed")
          is_active = False
       else:
-         print("Processed result: {}".format(client_input))
+         print("{}".format(client_input))
          connection.sendall("-".encode("utf8"))
 
 def receive_input(connection, max_buffer_size):
@@ -63,8 +63,9 @@ def receive_input(connection, max_buffer_size):
    return result
 
 def process_input(input_str):
-   print("Processing the input received from client")
-   return "Hello " + str(input_str).upper()
+   # print("Processing the input received from client")
+   # return "Hello " + str(input_str).upper()
+   return "Message received!"
         
 # def server_prog():
 #     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
