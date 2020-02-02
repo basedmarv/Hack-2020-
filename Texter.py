@@ -3,44 +3,40 @@ from twilio import twiml
 from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from flask import Flask, request, redirect
+import openpyxl
+from openpyxl import Workbook
 
-import mainGUI
 
 account_sid = Credentials.get_sid()
 auth_token = Credentials.get_auth()
+path = Credentials.path
 
 app = Flask(__name__)
 
+def update_xl(message_body):
+    wb = openpyxl.load_workbook(path)
+    sheet = wb.active
+
+    lastRow = sheet.max_row
+    sheet.cell(column = 1, row = lastRow + 1, value="{0}".format(message_body))
+
+    wb.save(filename = path)
+
+
+
 @app.route("/sms", methods=['GET','POST'])
 def sms_reply():
-    number = request.form['From']
+
+    #Retrieve actual message
     message_body = request.form['Body']
 
-    mainGUI.create_list(message_body)
-
-    #sms_send()
+    #Update Excel Sheet
+    update_xl(message_body)
 
     resp = MessagingResponse()
-    # resp.message("Hello {}, you said: {}".format(number, message_body))
     resp.message("Hi!! Thank you for the message! I'm sure they'll enjoy it")
 
     return str(resp)
-
-
-
-
-
-def sms_send():
-    client = Client(account_sid,auth_token)
-
-    message = client.messages \
-                    .create(
-                        body="Lemme know if u got this txt",
-                        from_='+19167133050',
-                        to='+18583352149'
-                    )
-
-    print(message.sid)
 
 if __name__ == "__main__":
     app.run(debug=True)
