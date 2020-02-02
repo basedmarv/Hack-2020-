@@ -11,8 +11,8 @@ def create_list(workbook):
     ws = workbook.active
     arr = [] 
     for x in range(ws.max_row - 1):
-        yuh = ws.cell(x+2,1)
-        arr.append(yuh)
+        createL = ws.cell(x+2,1)
+        arr.append(createL)
 
     return arr
 
@@ -20,7 +20,7 @@ def create_list(workbook):
 def main(message_body = None):
 
     wb = openpyxl.load_workbook(path)
-    yessir = create_list(wb)
+    cL = create_list(wb)
 
     top = Tk()
     top.title('The Newlyweds')
@@ -32,17 +32,17 @@ def main(message_body = None):
     
     count = 10
     if maxR < 10:
-        for x in range(len(yessir)):
+        for x in range(len(cL)):
             text_try = Text(top, height = 2, width = 50)
             text_try.tag_configure("left", justify='left')
             text_try.pack()
-            text_try.insert(END, yessir[x].value)
+            text_try.insert(END, cL[x].value)
     else: 
         while count > 0:
             text_try = Text(top, height = 2, width = 50)
             text_try.tag_configure("left", justify='left')
             text_try.pack()
-            text_try.insert(END, yessir[maxR-count-1].value)
+            text_try.insert(END, cL[maxR-count-1].value)
             count = count - 1
 
     top.mainloop() 
